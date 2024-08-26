@@ -1,26 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-    	<meta charset="utf-8">
-    	<meta name="description" content="This is where your description goes">
-    	<meta name="keywords" content="one, two, three">
 
-		<title>Title in the tab</title>
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="This is where your description goes">
+	<meta name="keywords" content="one, two, three">
+	<title>Title in the tab</title>
 
-		<!-- external CSS link -->
-		<link rel="stylesheet" href="css/normalize.css">
-		<link rel="stylesheet" href="css/style.css">
-	</head>
-	<body>
+	<!-- external CSS link -->
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
 
-		<h1>Which Pokemon?</h1>
-		<input type="text" name="" value="">
-		<button type="button" name="button">Get Pokemon</button>
+<body>
 
-		<h2>Name?</h2>
-		<img src="img/pokemon.jpeg" alt="">
-		<h3>Type?</h3>
+	<h1 class="title-page">NASA API</h1>
+	<div class="input-container">
+		<input type="text" id="date-input" placeholder="Enter date (YYYY-MM-DD)">
+		<button type="button" id="fetch-button">Get Stars</button>
+	</div>
 
-		<script type="text/javascript" src="js/main.js"></script>
-	</body>
+	<div id="results">
+		<div class="result-item">
+			<h2 id="title">Name?</h2>
+			<img src="img/pokemon.jpeg" id="imageNasa" alt="">
+			<h3 id="type">Type?</h3>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="js/main.js"></script>
+</body>
+
 </html>
