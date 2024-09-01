@@ -1,21 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-    	<meta charset="utf-8">
-    	<meta name="description" content="This is where your description goes">
-    	<meta name="keywords" content="one, two, three">
 
-		<title>Title in the tab</title>
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="This is where your description goes">
+	<meta name="keywords" content="one, two, three">
 
-		<!-- external CSS link -->
-		<link rel="stylesheet" href="css/normalize.css">
-		<link rel="stylesheet" href="css/style.css">
-	</head>
-	<body>
-		<img src="img/the-circle.jpg" alt="Netflix's The Circle">
+	<title>Title in the tab</title>
 
-		<h2></h2>
+	<!-- external CSS link -->
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
 
-		<script type="text/javascript" src="js/main.js"></script>
-	</body>
+<body>
+
+	<h2 class="game-title">CARD Game</h2>
+	<h5>Current deck: <span id="deckIdentifier"></span></h5>
+	<h4>Current deck size: <span id="deckSize"></span></h4>
+	<div class="container">
+		<div class="player player1">
+			<h2>Player 1: <span id="player1Score" class="score">0</span></h2>
+			<img  id="player1Image1" class="player-image" alt="Player 1">
+		</div>
+		<div class="player player2">
+			<h2>Player 2: <span id="player2Score" class="score">0</span></h2>
+			<img  id="player2Image1" class="player-image" alt="Player 2">
+		</div>
+	</div>
+	
+	<h2>RESULT: <span id="results"></span></h2>
+
+	<div id="cards" class="cards"></div>
+
+	<button id="dealCards" class="deal-button">Deal Cards</button>
+
+	<script type="text/javascript" src="js/main.js"></script>
+</body>
+
 </html>
