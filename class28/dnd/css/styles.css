@@ -1,0 +1,31 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+ul,
+ol {
+    list-style-type: none;
+    padding-left: 0;
+    /* Optional: removes default padding */
+    margin: 0;
+    /* Optional: removes default margin */
+}
+
+.character-class-item {
+    padding: 8px 16px;
+    background-color: #f4f4f4;
+    border-bottom: 2px solid #ddd;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+
+}
+.hidden {
+    display: none;
+}
+.character-class-item:hover {
+    background-color: #d4d4d4;
+}
