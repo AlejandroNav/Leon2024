@@ -1,110 +1,106 @@
-// Event listener for fetching all classes
-document.querySelector('#fetch-button').addEventListener('click', fetchCharacters);
+// Event listener for searching a book by ISBN
+let searchButton = document.querySelector('#search-button');
+searchButton.addEventListener('click', fetchBook);
 
-// Event listener for searching a single class
-document.querySelector('#search-button').addEventListener('click', searchClass);
+// Event listener for saving the book to localStorage
+let saveButton = document.querySelector('#fetch-button');
+saveButton.addEventListener('click', saveBook);
 
-function fetchClassDetails(classUrl, li) {
-    let detailsSection = li.querySelector('.details-section');
-    if (detailsSection) {
-        detailsSection.classList.toggle('hidden');
-    } else {
-        detailsSection = document.createElement('div');
-        detailsSection.classList.add('details-section');
-        li.appendChild(detailsSection);
+let currentBook = null; // To store the current book being fetched
 
-        const fullUrl = `https://www.dnd5eapi.co${classUrl}`;
-        console.log(`Fetching class details for: ${fullUrl}`);
-
-        fetch(fullUrl)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-
-                const hitDie = document.createElement('p');
-                hitDie.textContent = `Hit Die: ${data.hit_die}`;
-                detailsSection.appendChild(hitDie);
-
-                const proficiencies = document.createElement('p');
-                proficiencies.textContent = `Proficiencies: ${data.proficiencies.map(p => p.name).join(', ')}`;
-                detailsSection.appendChild(proficiencies);
-
-                const savingThrows = document.createElement('p');
-                savingThrows.textContent = `Saving Throws: ${data.saving_throws.map(st => st.name).join(', ')}`;
-                detailsSection.appendChild(savingThrows);
-
-                detailsSection.classList.remove('hidden');
-            })
-            .catch(err => {
-                console.error(`Error fetching class details: ${err}`);
-            });
+function fetchBook() {
+    console.log('fetching...');
+    const isbn = document.querySelector('#isbn-input').value.trim(); // Get ISBN input and trim spaces;
+    if (!isbn) {
+        alert('Please enter a valid ISBN');
+        return;
     }
-}
 
-// Fetch all characters
-function fetchCharacters() {
-    const url = `https://www.dnd5eapi.co/api/classes`;
+    url = `https://openlibrary.org/isbn/${isbn}.json`;
     console.log(url);
-
-    fetch(url)
-        .then(res => res.json())
-        .then(data => {
-            console.log(data);
-
-            if (data.results && Array.isArray(data.results)) {
-                const characterClasses = data.results;
-                const resultsContainer = document.querySelector('#results');
-                resultsContainer.innerHTML = '';
-
-                characterClasses.forEach(characterClass => {
-                    console.log(characterClass.name);
-
-                    const li = document.createElement('li');
-                    li.classList.add('character-class-item');
-                    li.textContent = characterClass.name;
-
-                    li.addEventListener('click', () => fetchClassDetails(characterClass.url, li));
-
-                    resultsContainer.appendChild(li);
-                });
-            } else {
-                console.log('No classes found');
-            }
-        })
-        .catch(err => {
-            console.error(`Error: ${err}`);
-        });
-}
-
-// Search for a specific class by name
-function searchClass() {
-    const name = document.querySelector('#name-input').value.toLowerCase().trim();  // Ensure it's lowercased and trimmed
-    const url = `https://www.dnd5eapi.co/api/classes/${name}`;
-    console.log(`Searching for class: ${url}`);
 
     fetch(url)
         .then(res => {
             if (!res.ok) {
-                throw new Error('Class not found');
+                throw new Error('Book not found');
             }
             return res.json();
         })
         .then(data => {
             console.log(data);
-
-            const resultsContainer = document.querySelector('#results');
-            resultsContainer.innerHTML = '';  // Clear previous results
-
-            const li = document.createElement('li');
-            li.classList.add('character-class-item');
-            li.textContent = data.name;
-
-            li.addEventListener('click', () => fetchClassDetails(data.url, li));
-
-            resultsContainer.appendChild(li);
+            currentBook = data; // Save the current book data for saving later
+            displayBookInfo(data);
         })
         .catch(err => {
             console.error(`Error: ${err}`);
-            alert('Class not found. Please check the name and try again.');
+            alert('Could not find the book. Please check the ISBN.');
         });
+}
+
+function displayBookInfo(book) {
+    const resultsContainer = document.querySelector('#results');
+    resultsContainer.innerHTML = ''; // Clear previous results
+
+    const li = document.createElement('li');
+    li.classList.add('book-item');
+
+    // Format book information to display
+    li.innerHTML = `
+        <strong>Title:</strong> ${book.full_title || book.title} <br>
+        <strong>Version:</strong> ${book.physical_format || 'Unknown'} <br>
+        <strong>Publisher:</strong> ${book.publishers ? book.publishers[0] : 'Unknown'} <br>
+        <strong>Number of Pages:</strong> ${book.number_of_pages || 'N/A'}
+    `;
+
+    resultsContainer.appendChild(li);
+}
+// Save the current book to local storage
+function saveBook() {
+    if (!currentBook) {
+        alert('No book to save! Please search for a book first.');
+        return;
+    }
+
+    // Get the existing saved books from local storage
+    let savedBooks = JSON.parse(localStorage.getItem('savedBooks')) || [];
+
+    // Add the current book to the saved books list
+    savedBooks.push({
+        title: currentBook.full_title || currentBook.title,
+        version: currentBook.physical_format || 'Unknown',
+        publisher: currentBook.publishers ? currentBook.publishers[0] : 'Unknown',
+        pages: currentBook.number_of_pages || 'N/A',
+        isbn: currentBook.isbn_10 ? currentBook.isbn_10[0] : currentBook.isbn_13 ? currentBook.isbn_13[0] : 'Unknown'
+    });
+
+    // Save the updated list back to local storage
+    localStorage.setItem('savedBooks', JSON.stringify(savedBooks));
+    console.log(savedBooks);
+    alert('Book saved successfully!');
+}
+
+// Optional: Function to view saved books from local storage
+function viewSavedBooks() {
+    const savedBooks = JSON.parse(localStorage.getItem('savedBooks')) || [];
+    
+    const resultsContainer = document.querySelector('#results');
+    resultsContainer.innerHTML = ''; // Clear previous results
+
+    if (savedBooks.length === 0) {
+        resultsContainer.textContent = 'No books saved.';
+        return;
+    }
+
+    savedBooks.forEach(book => {
+        const li = document.createElement('li');
+        li.classList.add('book-item');
+        li.innerHTML = `
+            <strong>Title:</strong> ${book.title} <br>
+            <strong>Version:</strong> ${book.version} <br>
+            <strong>Publisher:</strong> ${book.publisher} <br>
+            <strong>Pages:</strong> ${book.pages} <br>
+            <strong>ISBN:</strong> ${book.isbn}
+        `;
+        resultsContainer.appendChild(li);
+    });
 }

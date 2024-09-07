@@ -19,22 +19,19 @@ ol {
     /* Optional: removes default margin */
 }
 
-.character-class-item {
-    padding: 8px 16px;
-    background-color: #f4f4f4;
-    border-bottom: 2px solid #ddd;
-    font-size: 16px;
-    color: #333;
-    cursor: pointer;
-
-}
 .hidden {
     display: none;
-}
-.character-class-item:hover {
-    background-color: #d4d4d4;
 }
 .results {
     margin-top: 20px;
     width: 500px;
+}
+#results {
+    margin-top: 20px;
+    width: 500px;
+    padding: 20px;
+}
+#results li {
+    margin-bottom: 20px;
+    border-bottom: 2px solid #989898;
 }

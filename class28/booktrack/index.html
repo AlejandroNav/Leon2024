@@ -4,18 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DND API</title>
-    
+    <title>Book Tracker</title>
+
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
 
-    <h1 class="title-page">DND API</h1>
+    <h1 class="title-page">Book Tracker</h1>
     <div>
-        <input type="text" id="name-input" placeholder="Enter class name"><button id="search-button">Search Class</button>
-        <button type="button" id="fetch-button">Get all Classes</button>
+        <input type="text" id="isbn-input" placeholder="Enter ISBN"><button id="search-button">Search Book</button>
+        <button type="button" id="fetch-button">Save Book</button>
+        <button type="button" id="view-saved-button" onclick="viewSavedBooks()">View Saved Books</button>
     </div>
 
     <div class="results">
