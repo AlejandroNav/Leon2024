@@ -31,3 +31,10 @@ function fetchCharacter() {
         })
         .catch(error => console.error("Error fetching character: " + error));
 }
+
+
+for (let i = 1; i <= 10; i++) {
+
+    console.log(i);
+    
+}
